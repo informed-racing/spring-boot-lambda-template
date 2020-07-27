@@ -1,0 +1,40 @@
+plugins {
+    id 'org.springframework.boot' version "2.3.2.RELEASE"
+    id "com.github.johnrengelman.shadow" version "6.0.0"
+}
+
+apply plugin: "java"
+apply plugin: "io.spring.dependency-management"
+
+group "informed.racing"
+
+repositories {
+    mavenCentral()
+    maven {
+        url "s3://informed-racing/repo/snapshots"
+        authentication {
+            awsIm(AwsImAuthentication)
+        }
+    }
+}
+
+apply from: 'dependencies.gradle'
+
+assemble.dependsOn = [shadowJar]
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
+
+shadowJar {
+    archivesBaseName = project.name
+    archiveClassifier = ""
+    archiveVersion = ""
+    // Required for Spring
+    mergeServiceFiles()
+    append "META-INF/spring.handlers"
+    append "META-INF/spring.schemas"
+    append "META-INF/spring.tooling"
+    transform(PropertiesFileTransformer) {
+        paths = ["META-INF/spring.factories"]
+        mergeStrategy = "append"
+    }
+}

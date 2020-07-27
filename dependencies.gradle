@@ -1,0 +1,44 @@
+version "1.0-SNAPSHOT"
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6"
+        mavenBom "org.apache.logging.log4j:log4j-bom:2.13.3"
+        mavenBom "com.amazonaws:aws-java-sdk-bom:1.11.822"
+        mavenBom "com.amazonaws:aws-xray-recorder-sdk-bom:2.6.1"
+    }
+}
+
+dependencies {
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.projectlombok:lombok:${versionLombok}"
+
+    implementation(
+            "org.springframework.cloud:spring-cloud-function-adapter-aws",
+            "org.projectlombok:lombok:${versionLombok}",
+            "org.apache.logging.log4j:log4j-core",
+            "com.amazonaws:aws-java-sdk-sqs",
+            "com.amazonaws:aws-lambda-java-core:${versionAwsLambdaCore}",
+            "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}"
+    )
+
+    compile("informed.racing:common:${versionInformedRacingCommon}") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
+    }
+
+
+    testAnnotationProcessor "org.projectlombok:lombok:${versionLombok}"
+
+    testImplementation(
+            "org.projectlombok:lombok:${versionLombok}",
+            "org.junit.jupiter:junit-jupiter-api:${versionJUnitJupiter}"
+    )
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versionJUnitJupiter}"
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "informed.racing.requests.Application"
+    }
+}
