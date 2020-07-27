@@ -2,10 +2,10 @@ version "1.0-SNAPSHOT"
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6"
-        mavenBom "org.apache.logging.log4j:log4j-bom:2.13.3"
-        mavenBom "com.amazonaws:aws-java-sdk-bom:1.11.822"
-        mavenBom "com.amazonaws:aws-xray-recorder-sdk-bom:2.6.1"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${bomSpringCloud}"
+        mavenBom "org.apache.logging.log4j:log4j-bom:${bomLog4j}"
+        mavenBom "com.amazonaws:aws-java-sdk-bom:${bomAwsJavaSdk}"
+        mavenBom "com.amazonaws:aws-xray-recorder-sdk-bom:${bomAwsXRaySdk}"
     }
 }
 
