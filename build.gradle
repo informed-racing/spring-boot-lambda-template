@@ -1,6 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version "2.3.2.RELEASE"
-    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id 'org.springframework.boot' version "${pluginSpringBoot}"
+    id "com.github.johnrengelman.shadow" version "${pluginShadow}"
 }
 
 apply plugin: "java"
