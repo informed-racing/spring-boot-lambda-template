@@ -3,7 +3,6 @@ version "${thisReleaseVersion}"
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${bomSpringCloud}"
-        mavenBom "org.apache.logging.log4j:log4j-bom:${bomLog4j}"
         mavenBom "com.amazonaws:aws-java-sdk-bom:${bomAwsJavaSdk}"
         mavenBom "com.amazonaws:aws-xray-recorder-sdk-bom:${bomAwsXRaySdk}"
     }
@@ -13,14 +12,18 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     annotationProcessor "org.projectlombok:lombok:${versionLombok}"
 
+    implementation("org.springframework.cloud:spring-cloud-function-adapter-aws") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    }
     implementation(
-            "org.springframework.cloud:spring-cloud-function-adapter-aws",
+            "org.springframework.boot:spring-boot-starter-log4j2",
             "org.projectlombok:lombok:${versionLombok}",
-            "org.apache.logging.log4j:log4j-core",
             "com.amazonaws:aws-java-sdk-sqs",
             "com.amazonaws:aws-lambda-java-core:${versionAwsLambdaCore}",
             "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}"
     )
+
+    runtimeOnly "com.amazonaws:aws-lambda-java-log4j2:${versionAwsLambdaLog4j}"
 
     compile("informed.racing:common:${versionInformedRacingCommon}") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
@@ -39,6 +42,6 @@ dependencies {
 
 jar {
     manifest {
-        attributes "Main-Class": "informed.racing.requests.Application"
+        attributes "Start-Class": "informed.racing.requests.Application"
     }
 }
