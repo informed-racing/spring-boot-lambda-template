@@ -21,8 +21,7 @@ dependencies {
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
             "com.amazonaws:aws-java-sdk-sqs",
             "com.amazonaws:aws-lambda-java-core:${versionAwsLambdaCore}",
-            "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}",
-            "com.amazonaws:aws-xray-recorder-sdk-core"
+            "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}"
     )
 
     runtimeOnly "com.amazonaws:aws-lambda-java-log4j2:${versionAwsLambdaLog4j}"
