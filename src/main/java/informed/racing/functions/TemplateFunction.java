@@ -23,7 +23,6 @@ public class TemplateFunction implements Function<SQSEvent, String> {
 
     @Override
     public String apply(SQSEvent sqs) {
-        log.info("scraperJobQueue: {}", sqs);
         sqs.getRecords().forEach(record -> {
             log.info("message received: {}", record.getMessageId());
             xrayContextRecovery(record.getAttributes().get("AWSTraceHeader"));
