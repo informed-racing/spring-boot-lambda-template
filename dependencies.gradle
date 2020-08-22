@@ -18,6 +18,7 @@ dependencies {
     implementation(
             "org.springframework.boot:spring-boot-starter-log4j2",
             "org.projectlombok:lombok:${versionLombok}",
+            "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
             "com.amazonaws:aws-java-sdk-sqs",
             "com.amazonaws:aws-lambda-java-core:${versionAwsLambdaCore}",
             "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}"
