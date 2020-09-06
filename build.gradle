@@ -22,6 +22,8 @@ apply from: 'dependencies.gradle'
 
 assemble.dependsOn = [shadowJar]
 
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
 import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 shadowJar {
@@ -30,11 +32,17 @@ shadowJar {
     archiveVersion = ""
     // Required for Spring
     mergeServiceFiles()
-    append "META-INF/spring.handlers"
-    append "META-INF/spring.schemas"
-    append "META-INF/spring.tooling"
+    mergeGroovyExtensionModules()
+    transform(Log4j2PluginsCacheFileTransformer)
     transform(PropertiesFileTransformer) {
-        paths = ["META-INF/spring.factories"]
+        paths = [
+                'META-INF/spring.factories',
+                "META-INF/spring.handlers",
+                'META-INF/spring.provides',
+                "META-INF/spring.schemas",
+                "META-INF/spring.tooling",
+                'META-INF/spring-autoconfigure-metadata.properties',
+        ]
         mergeStrategy = "append"
     }
 }

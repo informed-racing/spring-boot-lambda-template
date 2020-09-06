@@ -2,6 +2,7 @@ version "${thisReleaseVersion}"
 
 dependencyManagement {
     imports {
+        mavenBom "org.springframework:spring-framework-bom:${bomSpringFramework}"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${bomSpringCloud}"
         mavenBom "com.amazonaws:aws-java-sdk-bom:${bomAwsJavaSdk}"
         mavenBom "com.amazonaws:aws-xray-recorder-sdk-bom:${bomAwsXRaySdk}"
@@ -12,24 +13,24 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     annotationProcessor "org.projectlombok:lombok:${versionLombok}"
 
-    implementation("org.springframework.cloud:spring-cloud-function-adapter-aws") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
     implementation(
+            "org.springframework.cloud:spring-cloud-function-adapter-aws",
+            "org.springframework.boot:spring-boot-configuration-processor",
+            "org.springframework.boot:spring-boot-starter-data-jpa",
             "org.springframework.boot:spring-boot-starter-log4j2",
             "org.projectlombok:lombok:${versionLombok}",
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
+            "com.amazonaws:aws-java-sdk-secretsmanager",
+            "com.amazonaws:aws-java-sdk-rds",
             "com.amazonaws:aws-java-sdk-sqs",
+            "com.amazonaws:aws-java-sdk-s3",
             "com.amazonaws:aws-lambda-java-core:${versionAwsLambdaCore}",
-            "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}"
+            "com.amazonaws:aws-lambda-java-events:${versionAwsLambdaEvents}",
+            "informed.racing:common:${versionInformedRacingCommon}"
     )
 
     runtimeOnly "com.amazonaws:aws-lambda-java-log4j2:${versionAwsLambdaLog4j}"
-
-    compile("informed.racing:common:${versionInformedRacingCommon}") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
-    }
-
+    runtimeOnly "mysql:mysql-connector-java:${versionMysqlConnector}"
 
     testAnnotationProcessor "org.projectlombok:lombok:${versionLombok}"
 
@@ -41,8 +42,14 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versionJUnitJupiter}"
 }
 
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
 jar {
     manifest {
-        attributes "Start-Class": "informed.racing.requests.Application"
+        attributes "Main-Class": "informed.racing.Application"
     }
 }

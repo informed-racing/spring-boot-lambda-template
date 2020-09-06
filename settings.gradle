@@ -1,2 +1,12 @@
 rootProject.name = 'spring-boot-lambda-template'
 
+def dependentBuilds = [
+        "common"
+]
+
+for (build in dependentBuilds) {
+    def location = "../${build}" as String
+    if (file(location).exists()) {
+        includeBuild location
+    }
+}
