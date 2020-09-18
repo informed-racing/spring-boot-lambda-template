@@ -1,3 +1,6 @@
+draw-change-date:
+  uk: 2011-03-30
+  ire: 2011-04-11
 spring:
   datasource:
     hikari:
@@ -10,7 +13,7 @@ spring:
       idle-timeout: 110000
       maintainTimeStats: false
       max-lifetime: 120000
-      maximum-pool-size: 200
+      maximum-pool-size: 10
       minimum-idle: 0
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048
@@ -23,5 +26,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        event.merge.entity_copy_observer: allow
 storage:
   bucket: informed-racing
