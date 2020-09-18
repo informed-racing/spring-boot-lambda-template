@@ -10,15 +10,17 @@ dependencyManagement {
 }
 
 dependencies {
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    annotationProcessor "org.projectlombok:lombok:${versionLombok}"
+    annotationProcessor(
+            "org.projectlombok:lombok:${versionLombok}",
+            "org.springframework.boot:spring-boot-configuration-processor"
+    )
 
     implementation(
+            "org.projectlombok:lombok:${versionLombok}",
             "org.springframework.cloud:spring-cloud-function-adapter-aws",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-data-jpa",
             "org.springframework.boot:spring-boot-starter-log4j2",
-            "org.projectlombok:lombok:${versionLombok}",
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versionJackson}",
             "com.amazonaws:aws-java-sdk-secretsmanager",
             "com.amazonaws:aws-java-sdk-rds",

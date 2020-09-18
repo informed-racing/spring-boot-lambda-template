@@ -28,6 +28,8 @@ import java.util.Optional;
 @EnableJpaAuditing
 public class Config {
 
+    @Value("${spring.profiles.active:dev}")
+    private String activeProfile;
     @Value("#{environment.DB_HOSTNAME}")
     private String dbHostname;
     @Value("#{environment.DB_PORT}")
@@ -36,6 +38,18 @@ public class Config {
     private String dbSecretArn;
     @Value("#{environment.DB_NAME}")
     private String dbName;
+
+    @Bean
+    public DBCredentials dbCredentials(AWSSecretsManager secretsManager, ObjectMapper objectMapper) throws JsonProcessingException {
+        if (activeProfile.equals("dev")) {
+            return DBCredentials.builder()
+                    .username("root")
+                    .password("")
+                    .build();
+        }
+        GetSecretValueResult secretValueResult = secretsManager.getSecretValue(new GetSecretValueRequest().withSecretId(dbSecretArn));
+        return objectMapper.readValue(secretValueResult.getSecretString(), DBCredentials.class);
+    }
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -61,13 +75,11 @@ public class Config {
 
     @Bean
     @ConfigurationProperties("spring.datasource.hikari")
-    public DataSource dataSource(AWSSecretsManager secretsManager, ObjectMapper objectMapper) throws JsonProcessingException {
-        GetSecretValueResult secretValueResult = secretsManager.getSecretValue(new GetSecretValueRequest().withSecretId(dbSecretArn));
-        DBCredentials credentials = objectMapper.readValue(secretValueResult.getSecretString(), DBCredentials.class);
+    public DataSource dataSource(DBCredentials dbCredentials) {
         return DataSourceBuilder.create()
                 .url("jdbc:mysql://" + dbHostname + ":" + dbPort + "/" + Optional.ofNullable(dbName).orElse("informed_racing") + "?createDatabaseIfNotExist=true&serverTimezone=Europe/London")
-                .username(credentials.getUsername())
-                .password(credentials.getPassword())
+                .username(dbCredentials.getUsername())
+                .password(dbCredentials.getPassword())
                 .build();
     }
 
