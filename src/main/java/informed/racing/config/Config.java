@@ -2,6 +2,8 @@ package informed.racing.config;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
@@ -71,6 +73,11 @@ public class Config {
     @Bean
     public AmazonS3 s3Client() {
         return AmazonS3ClientBuilder.defaultClient();
+    }
+
+    @Bean
+    public TransferManager s3TransferManager(AmazonS3 s3Client) {
+        return TransferManagerBuilder.standard().withS3Client(s3Client).build();
     }
 
     @Bean

@@ -13,7 +13,7 @@ spring:
       idle-timeout: 110000
       maintainTimeStats: false
       max-lifetime: 120000
-      maximum-pool-size: 10
+      maximum-pool-size: 100
       minimum-idle: 0
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048
